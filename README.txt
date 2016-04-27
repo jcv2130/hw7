@@ -163,7 +163,7 @@ To perform an experiment that we thought would highlight the strengths of
 the bfs scheduler, we repeated the first two tests with an added task. We
 compiled the kernel as before, but with the added task of using firefox to
 play an online game. The game, slither.io, requires very frequent user input
-with the keyboard, as well as constant visual display updates.
+with the keyboard, as well as frequent refreshing of the visual display.
 First, using the linux-4.1.18-jcv2130-bfs kernel, we compiled the
 linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
 command we got the run statistics:
@@ -174,7 +174,17 @@ sys	0m14.100s
 Then, using the linux-4.1.18-jcv2130 kernel, we compiled the
 linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
 command we got the run statistics:
+real	19m15.281s
+user	17m0.830s
+sys	0m38.400s
 
+As we expected, the bfs kernel performed better than the cfs kernel in this
+experiment. It compiled the kernel in 87% of the time the cfs kernel took,
+used about the same amount of user CPU time, and used 37% as much system CPU
+time. Also, an important difference, during the bfs run, the online game
+operated much more smoothly than it did during the cfs run. During the cfs
+run the game graphics refreshed poorly, and there was more lag on user
+inputs.
 
 
 
@@ -209,3 +219,9 @@ are clearly not the same. The difference between the two values is
 approximately 4294967296, or 2^32.They are different because they differ by
 2^32, or the amount of extra bits that jiffies_64 has in comparison to 
 jiffies.
+
+
+
+Part 6:
+
+
