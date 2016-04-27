@@ -140,4 +140,34 @@ CPU.
 
 Part 4
 
+Part 5:
 
+1. With a larger HZ kernel timers execute with a finer resolution and
+increased accuracy. This results in system calls with timeout values to
+execute more precisely and measurements to be recorded more precisely. Process
+preemption also occurs more accurately.
+
+The major disadvantage to higher HZ values is that there is higher overhead
+because the processor must spend more time executing the interrupt handler.
+This overhead results in less processor time for other work and higher power
+consumption.
+
+2. The HZ is currently configured at 100, as seen in the config file.
+
+3. jiffies is the number of ticks that have occurred since the system booted.
+jiffies is normally stored in a 32-bit variable. jiffies_64 is the 64-bit
+version of jiffies. jiffies is set equal to jiffies_64 and any program that
+accesses jiffies is really accessing the lower 32-bits of jiffies_64. If all
+64 bits are needed jiffies_64 can be accessed directly.
+
+4. The value of jiffies when I checked it was 282718. The system uptime is 
+thus 282718 / 100 seconds, which is equal to 2827.18 seconds, which is
+approximately 47 minutes. The uptime command confirms this number.
+
+5. The value of jiffies when I checked it the second time wa 322557. The value
+of jiffies_64 when I checked it was 4295289853. I expected them to be the same
+because the system has not been on long enough to overflow jiffies_64. They
+are clearly not the same. The difference between the two values is
+approximately 4294967296, or 2^32.They are different because they differ by
+2^32, or the amount of extra bits that jiffies_64 has in comparison to 
+jiffies.
