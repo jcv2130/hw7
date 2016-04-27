@@ -108,6 +108,36 @@ We have successfully patched and booted into kernel 4.1.18-jcv2130-bfs
 
 
 
-PART 3
+Part 3
+The result of performing the steps of task 1 in the bfs kernel are
+essentially the same as they were in Part 1, however there were two main
+differences. First, before using renice, we noticed one difference while
+examining the output from top. In Part 1 all 10 of the generated processes
+had a priority value of 20. In the bfs kernel, the default priority seemed
+to be 1 and the scheduler appeared to rotate higher priority values around
+the 10 processes. Despite the rotating higher priority values on some of the
+processes, all 10 processes seem to share the CPU evenly.Second, when trying
+to use renice to divide the CPU into 5 processes taking 70% and 5 processes
+taking 30%, the previous nice values of 7 and 3 did not give the processes
+with a nice value of 7 enough of the CPU. It ended up taking a greater
+difference in nice values with the bfs scheduler to achieve the same
+scenario as in Part 1. We found that 5 processes running with nice value 12
+or 13 and 5 processes running with nice value 0 gave up the 30% 70%
+allocation of the CPU.
+
+Performing the steps of task 2, first we tried the command chrt -f -p 99
+<pid> without using sudo. We found that at first the designated process is
+given a priority value of 0 and uses 100% of the CPU, but after a few
+seconds, the scheduler begins to rotate the priority values as before. The
+process designated as an unprivileged real time task still takes more of the
+CPU than the other processes, using anywhere between 24% and 65% of the
+CPU. When we ran the chrt command using sudo we found that the designated
+process is given a priority value of rt and uses 100% of the CPU
+indefinitely, with none of the other processes getting any percent of the
+CPU.
+
+
+
+Part 4
 
 
