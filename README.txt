@@ -69,7 +69,7 @@ GiB Swap:  0.0/0.000    [                                                     ]
 
 
 
-Part 2
+Part 2:
 Output from diff  ../linux-4.1.18/.config  .config-jcv2130-bfs:
 
 48a49
@@ -108,7 +108,7 @@ We have successfully patched and booted into kernel 4.1.18-jcv2130-bfs
 
 
 
-Part 3
+Part 3:
 The result of performing the steps of task 1 in the bfs kernel are
 essentially the same as they were in Part 1, however there were two main
 differences. First, before using renice, we noticed one difference while
@@ -138,7 +138,18 @@ CPU.
 
 
 
-Part 4
+Part 4:
+First we built the linux-4.1.18-jcv2130 kernel using the
+linux-4.1.18-jcv2130-bfs kernel. Using the time command we got the run
+statistics:
+real	9m56.685s
+user	15m38.720s
+sys	0m16.690s
+Then we built the linux-4.1.18-jcv2130 kernel using the linux-4.1.18-jcv2130
+kernel. Using the time command we got the run statistics:
+
+
+
 
 Part 5:
 
