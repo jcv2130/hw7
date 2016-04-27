@@ -3,6 +3,7 @@ jcv2130
 README.txt
 
 
+
 Part 1:
 To create the task 1 scenario first we wrote the program myprogram.c, which
 forks 10 processes, then returns. Each of the 10 child processes enters an
@@ -14,7 +15,7 @@ Then using the command taskset 0x1 ./a.out, we started the 10 processes on
 the reserved CPU 0. Finally using the application top, we used renice to set
 the nice values of 5 of the tasks to 3, and the nice values of the other 5
 tasks to 7. This resulted in the situation specified by task 1. The output
-from top can be seen below.
+from top can be seen below:
 
 top - 15:27:06 up 20 min,  1 user,  load average: 10.02, 9.38, 6.02
 Tasks: 10 total, 10 running, 0 sleeping, 0 stopped, 0 zombie
@@ -38,17 +39,39 @@ GiB Swap:  0.0/0.000    [                                                     ]
 
 To create the task 2 scenario we edited myprogram.c to myprogram2.c, which
 forks the 10 processes as before, but then instead of returning, the parent
-process also enters an infinite for-loop.
+process also enters an infinite for-loop. By loading the kernel and running
+myprogram2.c as we did in task 1, we achieve 11 processes running on CPU 0,
+at this point sharing it equally. Then using the command sudo chrt -f -p 99
+<pid> we set the scheduling policy of one of the processes to SCHED_FIFO,
+giving it real time priority. (Using sudo is necessary to change process to
+real time priority). The real time process then preempts the other processes
+and takes around 97% of the CPU. The output from top can be seen below:
 
-NEEDS FURTHER EXPLANATION!!!!!!!
+top - 22:08:55 up 41 min,  1 user,  load average: 12.10, 6.06, 3.06
+Tasks:  11 total,  11 running,   0 sleeping,   0 stopped,   0 zombie
+%Cpu0  : 100.0/0.0   100[|||||||||||||||||||||||||||||||||||||||||||||||||||||]
+%Cpu1  :   1.6/0.5     2[                                                     ]
+GiB Mem :  6.2/1.972    [                                                     ]
+GiB Swap:  0.0/0.000    [                                                     ]
+
+  PID USER      PR  NI    VIRT    RES  %CPU %MEM     TIME+ S COMMAND
+  846 voss      rt   0    2.0m   0.6m  97.3  0.0   2:12.76 R a.out
+  847 voss      20   0    2.0m   0.0m   0.7  0.0   0:03.32 R  `- a.out
+  848 voss      20   0    2.0m   0.0m   0.7  0.0   0:03.32 R  `- a.out
+  849 voss      20   0    2.0m   0.0m   0.0  0.0   0:03.32 R  `- a.out
+  850 voss      20   0    2.0m   0.0m   0.0  0.0   0:03.32 R  `- a.out
+  851 voss      20   0    2.0m   0.0m   0.7  0.0   0:03.32 R  `- a.out
+  852 voss      20   0    2.0m   0.0m   0.7  0.0   0:03.32 R  `- a.out
+  853 voss      20   0    2.0m   0.0m   0.7  0.0   0:03.32 R  `- a.out
+  854 voss      20   0    2.0m   0.0m   0.0  0.0   0:03.32 R  `- a.out
+  855 voss      20   0    2.0m   0.0m   0.0  0.0   0:03.32 R  `- a.out
+  856 voss      20   0    2.0m   0.0m   0.0  0.0   0:03.32 R  `- a.out
+
+
 
 Part 2
 Output from diff  ../linux-4.1.18/.config  .config-jcv2130-bfs:
 
-3c3
-< # Linux/x86 4.1.18 Kernel Configuration
----
-> # Linux/x86 4.1.18-ck2 Kernel Configuration
 48a49
 > CONFIG_SCHED_BFS=y
 52c53
@@ -75,21 +98,16 @@ Output from diff  ../linux-4.1.18/.config  .config-jcv2130-bfs:
 < # CONFIG_SLAB is not set
 423a416
 > CONFIG_SMT_NICE=y
-455a449,453
-> CONFIG_VMSPLIT_3G=y
-> # CONFIG_VMSPLIT_3G_OPT is not set
-> # CONFIG_VMSPLIT_2G is not set
-> # CONFIG_VMSPLIT_2G_OPT is not set
-> # CONFIG_VMSPLIT_1G is not set
-518c516
-< # CONFIG_HZ_250 is not set
----
-> # CONFIG_HZ_250_NODEFAULT is not set
-532,533d529
+532,533d524
 < # CONFIG_BOOTPARAM_HOTPLUG_CPU0 is not set
 < # CONFIG_DEBUG_HOTPLUG_CPU0 is not set
-3686d3681
+3686d3676
 < # CONFIG_RCU_TORTURE_TEST is not set
 
+We have successfully patched and booted into kernel 4.1.18-jcv2130-bfs
+
+
+
+PART 3
 
 
