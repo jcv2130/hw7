@@ -69,7 +69,7 @@ GiB Swap:  0.0/0.000    [                                                     ]
 
 
 
-Part 2
+Part 2:
 Output from diff  ../linux-4.1.18/.config  .config-jcv2130-bfs:
 
 48a49
@@ -108,7 +108,7 @@ We have successfully patched and booted into kernel 4.1.18-jcv2130-bfs
 
 
 
-Part 3
+Part 3:
 The result of performing the steps of task 1 in the bfs kernel are
 essentially the same as they were in Part 1, however there were two main
 differences. First, before using renice, we noticed one difference while
@@ -138,7 +138,55 @@ CPU.
 
 
 
-Part 4
+Part 4:
+First we built the linux-4.1.18-jcv2130 kernel using the
+linux-4.1.18-jcv2130-bfs kernel. Using the time command we got the run
+statistics:
+real	9m56.685s
+user	15m38.720s
+sys	0m16.690s
+
+Then we built the linux-4.1.18-jcv2130 kernel using the linux-4.1.18-jcv2130
+kernel. Using the time command we got the run statistics:
+real	9m45.942s
+user	15m16.460s
+sys	0m30.410s
+
+Apparently the bfs kernel took slightly longer to compile the kernel, and
+used slightly more user CPU time. However the bfs kernel used roughly half
+the system CPU time. One thing to consider is that these tests were run as
+the only running processes on the VM, we would expect that the bfs kernel
+would show more of an advantage when the VM was handling multiple tasks at
+once.
+
+To perform an experiment that we thought would highlight the strengths of
+the bfs scheduler, we repeated the first two tests with an added task. We
+compiled the kernel as before, but with the added task of using firefox to
+play an online game. The game, slither.io, requires very frequent user input
+with the keyboard, as well as frequent refreshing of the visual display.
+First, using the linux-4.1.18-jcv2130-bfs kernel, we compiled the
+linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
+command we got the run statistics:
+real	16m49.674s
+user	17m20.140s
+sys	0m14.100s
+
+Then, using the linux-4.1.18-jcv2130 kernel, we compiled the
+linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
+command we got the run statistics:
+real	19m15.281s
+user	17m0.830s
+sys	0m38.400s
+
+As we expected, the bfs kernel performed better than the cfs kernel in this
+experiment. It compiled the kernel in 87% of the time the cfs kernel took,
+used about the same amount of user CPU time, and used 37% as much system CPU
+time. Also, an important difference, during the bfs run, the online game
+operated much more smoothly than it did during the cfs run. During the cfs
+run the game graphics refreshed poorly, and there was more lag on user
+inputs.
+
+
 
 Part 5:
 
@@ -171,3 +219,9 @@ are clearly not the same. The difference between the two values is
 approximately 4294967296, or 2^32.They are different because they differ by
 2^32, or the amount of extra bits that jiffies_64 has in comparison to 
 jiffies.
+
+
+
+Part 6:
+
+
