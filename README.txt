@@ -145,9 +145,19 @@ statistics:
 real	9m56.685s
 user	15m38.720s
 sys	0m16.690s
+
 Then we built the linux-4.1.18-jcv2130 kernel using the linux-4.1.18-jcv2130
 kernel. Using the time command we got the run statistics:
+real	9m45.942s
+user	15m16.460s
+sys	0m30.410s
 
+Apparently the bfs kernel took slightly longer to compile the kernel, and
+used slightly more user CPU time. However the bfs kernel used roughly half
+the system CPU time. One thing to consider is that these tests were run as
+the only running processes on the VM, we would expect that the bfs kernel
+would show more of an advantage when the VM was handling multiple tasks at
+once.
 
 
 
