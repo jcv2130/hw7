@@ -159,6 +159,23 @@ the only running processes on the VM, we would expect that the bfs kernel
 would show more of an advantage when the VM was handling multiple tasks at
 once.
 
+To perform an experiment that we thought would highlight the strengths of
+the bfs scheduler, we repeated the first two tests with an added task. We
+compiled the kernel as before, but with the added task of using firefox to
+play an online game. The game, slither.io, requires very frequent user input
+with the keyboard, as well as constant visual display updates.
+First, using the linux-4.1.18-jcv2130-bfs kernel, we compiled the
+linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
+command we got the run statistics:
+real	16m49.674s
+user	17m20.140s
+sys	0m14.100s
+
+Then, using the linux-4.1.18-jcv2130 kernel, we compiled the
+linux-4.1.18-jcv2130 kernel while playing the online game. Using the time
+command we got the run statistics:
+
+
 
 
 Part 5:
