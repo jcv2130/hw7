@@ -57,7 +57,7 @@ static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queue
 {
 }
 
-static void set_curr_task_freezer(struct freezer_rq *rq)
+static void set_curr_task_freezer(struct rq *rq)
 {
 }
 
@@ -67,7 +67,7 @@ static void switched_to_freezer(struct rq *rq, struct task_struct *p)
 }
 
 static void
-prio_changed_idle(struct rq *rq, struct task_struct *p, int oldprio)
+prio_changed_freezer(struct rq *rq, struct task_struct *p, int oldprio)
 {
 	// BUG();
 }
@@ -77,7 +77,7 @@ static unsigned int get_rr_interval_freezer(struct rq *rq, struct task_struct *t
 	return 0;
 }
 
-static void update_curr_idle(struct rq *rq)
+static void update_curr_freezer(struct rq *rq)
 {
 }
 
