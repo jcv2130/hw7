@@ -22,8 +22,8 @@ void main(int argc, char **argv) {
 	struct sched_param param = { 0 };
 
 	int newPolicy;
-	if (sched_setscheduler(pid, SCHED_FREEZER, &param) != 0) {
-	    //|| (newPolicy = sched_getscheduler(pid)) != SCHED_FREEZER) {
+	if (sched_setscheduler(pid, SCHED_FREEZER, &param) != 0
+	    || (newPolicy = sched_getscheduler(pid)) != SCHED_FREEZER) {
 		perror("sched_setscheduler() failed");
 		exit(1);
 	}
