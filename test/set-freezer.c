@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sched.h>
-#include "../include/uapi/linux/sched.h"
+
+#define SCHED_FREEZER 7
 
 void main(int argc, char **argv) {
 
@@ -18,9 +19,11 @@ void main(int argc, char **argv) {
 		exit(1);
 	}
 
+	struct sched_param param = { 0 };
+
 	int newPolicy;
-	if (sched_setscheduler(pid, SCHED_FREEZER, NULL) != 0
-	    || (newPolicy = sched_getscheduler(pid)) != SCHED_FREEZER) {
+	if (sched_setscheduler(pid, SCHED_FREEZER, &param) != 0) {
+	    //|| (newPolicy = sched_getscheduler(pid)) != SCHED_FREEZER) {
 		perror("sched_setscheduler() failed");
 		exit(1);
 	}
