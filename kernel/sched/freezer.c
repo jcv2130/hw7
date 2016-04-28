@@ -38,6 +38,7 @@ static void
 dequeue_task_freezer(struct rq *rq, struct task_struct *p, int flags)
 {
 	struct freezer_rq *freezer = &rq->freezer;
+	freezer->count--;
 	list_del(p->freezer.entity);	
 }
 
