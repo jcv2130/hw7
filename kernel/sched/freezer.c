@@ -42,6 +42,12 @@ dequeue_task_freezer(struct rq *rq, struct task_struct *p, int flags)
 	list_del(p->freezer.entity);	
 }
 
+static void enqueue_task(struct rq *rq, struct task_struct *p, int flags) {
+	struct freezer_rq *freezer = &rq_freezer;
+	freezer->count++;
+	list_add_tail(p->freezer.entity, &freezer->entities);
+}
+
 static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
 {
 	// access freezer member variable of rq
@@ -80,9 +86,9 @@ static void update_curr_freezer(struct rq *rq)
 
 struct sched_class freezer_sched_class = {
 	/* .next is NULL */
-	/* no enqueue/yield_task for idle tasks */
+	/* no yield_task for idle tasks */
 
-	/* dequeue is not valid, we print a debug message there: */
+	.enqueue_task		= enqueue_task_freezer,
 	.dequeue_task		= dequeue_task_freezer,
 
 	.pick_next_task		= pick_next_task_freezer,
