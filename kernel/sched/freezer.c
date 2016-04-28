@@ -34,18 +34,11 @@ pick_next_task_freezer(struct rq *rq, struct task_struct *prev)
 	return container_of(entity, struct task_struct, freezer);
 }
 
-/*
- * It is not legal to sleep in the idle task - print a warning
- * message if some code attempts to do it:
- */
 static void
 dequeue_task_freezer(struct rq *rq, struct task_struct *p, int flags)
 {
-	// not sure what to do yet here
-	// raw_spin_unlock_irq(&rq->lock);
-	// printk(KERN_ERR "bad: scheduling from the idle thread!\n");
-	// dump_stack();
-	// raw_spin_lock_irq(&rq->lock);
+	struct freezer_rq *freezer = &rq->freezer;
+	list_del(p->freezer.entity);	
 }
 
 static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
