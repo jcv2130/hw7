@@ -27,12 +27,11 @@ select_task_rq_freezer(struct task_struct *p, int cpu, int sd_flag, int flags)
 static struct task_struct *
 pick_next_task_freezer(struct rq *rq, struct task_struct *prev)
 {
-	// access freezer member variable of rq
-	// put_prev_task(rq, prev);
-
-	// schedstat_inc(rq, sched_goidle);
-	// return something else
-	return rq->idle;
+	struct freezer_rq *freezer = &rq->freezer;
+	struct list_head *entity = list_first_entry_or_null(&freezer->entities, struct sched_freezer_entity, entity);
+	if (!entity)
+		return NULL; 
+	return container_of(entity, struct task_struct, freezer);
 }
 
 /*

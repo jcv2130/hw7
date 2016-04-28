@@ -509,6 +509,7 @@ struct dl_rq {
 
 struct freezer_rq {
 	int count;
+	struct list_head entities;
 };
 
 #ifdef CONFIG_SMP

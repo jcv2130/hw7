@@ -1275,7 +1275,9 @@ struct sched_dl_entity {
 	struct hrtimer dl_timer;
 };
 
-struct sched_freezer_entity;
+struct sched_freezer_entity {
+	list_head entity;
+};
 
 union rcu_special {
 	struct {
@@ -1320,6 +1322,7 @@ struct task_struct {
 	struct task_group *sched_task_group;
 #endif
 	struct sched_dl_entity dl;
+	struct sched_freezer_entity freezer;
 
 #ifdef CONFIG_PREEMPT_NOTIFIERS
 	/* list of struct preempt_notifier: */
