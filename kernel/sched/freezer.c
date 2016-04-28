@@ -8,7 +8,19 @@
 static int
 select_task_rq_freezer(struct task_struct *p, int cpu, int sd_flag, int flags)
 {
-	return task_cpu(p); /* IDLE tasks as never migrated */
+	int cpu, count, ret, min = -1;
+	struct rq *rq;
+	struct freezer_rq *freezer;
+	for_each_possible_cpu(cpu) {
+		rq = cpu_rq(cpu);
+		freezer = &rq->freezer;
+		count = freezer->count;
+		if (count < min || min < 0) {
+			min = count;
+			ret = cpu;
+		}
+	}
+	return ret;
 }
 #endif /* CONFIG_SMP */
 

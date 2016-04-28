@@ -507,7 +507,9 @@ struct dl_rq {
 #endif
 };
 
-struct freezer_rq {};
+struct freezer_rq {
+	int count;
+};
 
 #ifdef CONFIG_SMP
 
