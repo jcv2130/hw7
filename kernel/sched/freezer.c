@@ -85,9 +85,9 @@ static void update_curr_freezer(struct rq *rq)
 
 
 struct sched_class freezer_sched_class = {
-	/* .next is NULL */
-	/* no yield_task for idle tasks */
 
+	.next			= &fair_sched_class,
+	
 	.enqueue_task		= enqueue_task_freezer,
 	.dequeue_task		= dequeue_task_freezer,
 
