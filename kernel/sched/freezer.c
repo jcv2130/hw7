@@ -24,15 +24,6 @@ select_task_rq_freezer(struct task_struct *p, int cpu, int sd_flag, int flags)
 }
 #endif /* CONFIG_SMP */
 
-/*
- * Idle tasks are unconditionally rescheduled:
- */
-static void check_preempt_curr_freezer(struct rq *rq, struct task_struct *p, int flags)
-{
-	// access freezer member variable of rq
-	// resched_curr(rq);
-}
-
 static struct task_struct *
 pick_next_task_freezer(struct rq *rq, struct task_struct *prev)
 {
@@ -100,8 +91,6 @@ struct sched_class freezer_sched_class = {
 
 	/* dequeue is not valid, we print a debug message there: */
 	.dequeue_task		= dequeue_task_freezer,
-
-	.check_preempt_curr	= check_preempt_curr_freezer,
 
 	.pick_next_task		= pick_next_task_freezer,
 	.put_prev_task		= put_prev_task_freezer,
