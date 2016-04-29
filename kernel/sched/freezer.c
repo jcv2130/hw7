@@ -62,6 +62,7 @@ static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
 
 static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queued)
 {
+	
 }
 
 static void set_curr_task_freezer(struct rq *rq)
@@ -70,24 +71,19 @@ static void set_curr_task_freezer(struct rq *rq)
 
 static void switched_to_freezer(struct rq *rq, struct task_struct *p)
 {
-	// BUG();
+	// not sure if we need this
 }
 
 static void
 prio_changed_freezer(struct rq *rq, struct task_struct *p, int oldprio)
 {
-	// BUG();
+	// not sure if we need this
 }
 
 static unsigned int get_rr_interval_freezer(struct rq *rq, struct task_struct *task)
 {
 	return 0;
 }
-
-static void update_curr_freezer(struct rq *rq)
-{
-}
-
 
 const struct sched_class freezer_sched_class = {
 
@@ -109,6 +105,5 @@ const struct sched_class freezer_sched_class = {
 	.get_rr_interval	= get_rr_interval_freezer,
 
 	.prio_changed		= prio_changed_freezer,
-	.switched_to		= switched_to_freezer,
-	.update_curr		= update_curr_freezer,
+	.switched_to		= switched_to_freezer
 };
