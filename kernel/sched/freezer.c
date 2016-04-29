@@ -55,11 +55,6 @@ static void enqueue_task_freezer(struct rq *rq, struct task_struct *p, int flags
 	list_add_tail(&p->freezer.entity, &freezer->entities);
 }
 
-static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
-{
-	// unsure what this function is supposed to do
-}
-
 static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queued)
 {
 	struct sched_freezer_entity *f_se = &curr->freezer;
@@ -76,20 +71,9 @@ static void set_curr_task_freezer(struct rq *rq)
 	curr_task->policy = SCHED_FREEZER;
 }
 
-static void switched_to_freezer(struct rq *rq, struct task_struct *p)
-{
-	// not sure if we need this
-}
-
-static void
-prio_changed_freezer(struct rq *rq, struct task_struct *p, int oldprio)
-{
-	// not sure if we need this
-}
-
 static unsigned int get_rr_interval_freezer(struct rq *rq, struct task_struct *task)
 {
-	return 0;
+	return FREEZER_TIMESLICE;
 }
 
 const struct sched_class freezer_sched_class = {
@@ -100,7 +84,6 @@ const struct sched_class freezer_sched_class = {
 	.dequeue_task		= dequeue_task_freezer,
 
 	.pick_next_task		= pick_next_task_freezer,
-	.put_prev_task		= put_prev_task_freezer,
 
 #ifdef CONFIG_SMP
 	.select_task_rq		= select_task_rq_freezer,
@@ -109,8 +92,5 @@ const struct sched_class freezer_sched_class = {
 	.set_curr_task          = set_curr_task_freezer,
 	.task_tick		= task_tick_freezer,
 
-	.get_rr_interval	= get_rr_interval_freezer,
-
-	.prio_changed		= prio_changed_freezer,
-	.switched_to		= switched_to_freezer
+	.get_rr_interval	= get_rr_interval_freezer
 };
