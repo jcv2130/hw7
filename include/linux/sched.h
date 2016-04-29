@@ -1277,6 +1277,7 @@ struct sched_dl_entity {
 
 struct sched_freezer_entity {
 	struct list_head entity;
+	int ticks_remaining;
 };
 
 union rcu_special {

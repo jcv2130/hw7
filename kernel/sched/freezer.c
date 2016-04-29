@@ -62,7 +62,11 @@ static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
 
 static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queued)
 {
-	
+	struct sched_freezer_entity *f_se = &curr->freezer;
+	if (--f_se->ticks_remaining > 0)
+		return;
+	entity.ticks_remaining = FREEZER_TIMESLICE;
+	list_move_tail(&f_se->entity, &rq->freezer.entities);
 }
 
 static void set_curr_task_freezer(struct rq *rq)
