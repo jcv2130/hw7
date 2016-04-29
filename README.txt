@@ -221,9 +221,20 @@ approximately 4294967296, or 2^32.They are different because they differ by
 jiffies.
 
 
+Part 6:
+Git commit code for part 6: 581908c5dba2b5238a24839101d884b227c7b0c1
 
-Part 6: 581908c5dba2b5238a24839101d884b227c7b0c1
+
+Part 7:
+Git commit code for part 7: bdc0be83f96b4d1428a4003fe81c25c018c9d56c
 
 
+Part 8:
+Git commit code for part 8: 6679de8ffd8b757f2b2dcf16f69cc471f635063e
 
-Part 7: bdc0be83f96b4d1428a4003fe81c25c018c9d56c
+
+Part 9:
+Our Freezer kernel seems to run about the same as CFS, however when
+playing an online game, the graphics seemed to lag more with the freezer
+kernel than they did with the CFS kernel.
+
