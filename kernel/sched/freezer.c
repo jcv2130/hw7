@@ -71,6 +71,9 @@ static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queue
 
 static void set_curr_task_freezer(struct rq *rq)
 {
+	struct task_struct *curr_task = rq->curr;
+	curr_task->freezer.ticks_remaining = FREEZER_TIMESLICE;
+	curr_task->policy = SCHED_FREEZER;
 }
 
 static void switched_to_freezer(struct rq *rq, struct task_struct *p)
