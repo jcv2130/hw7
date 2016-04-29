@@ -4,11 +4,16 @@
  * freezer scheduling class.
  */
 
+void init_freezer_rq(struct freezer_rq *freezer_rq) {
+	freezer_rq->count = 0;
+	INIT_LIST_HEAD(&freezer_rq->entities);
+}
+
 #ifdef CONFIG_SMP
 static int
 select_task_rq_freezer(struct task_struct *p, int cpu, int sd_flag, int flags)
 {
-	int cpu, count, ret, min = -1;
+	int count, ret = -1, min = -1;
 	struct rq *rq;
 	struct freezer_rq *freezer;
 	for_each_possible_cpu(cpu) {
@@ -20,6 +25,8 @@ select_task_rq_freezer(struct task_struct *p, int cpu, int sd_flag, int flags)
 			ret = cpu;
 		}
 	}
+	if (ret == -1)
+		BUG();
 	return ret;
 }
 #endif /* CONFIG_SMP */
@@ -39,20 +46,18 @@ dequeue_task_freezer(struct rq *rq, struct task_struct *p, int flags)
 {
 	struct freezer_rq *freezer = &rq->freezer;
 	freezer->count--;
-	list_del(p->freezer.entity);	
+	list_del(&p->freezer.entity);	
 }
 
-static void enqueue_task(struct rq *rq, struct task_struct *p, int flags) {
-	struct freezer_rq *freezer = &rq_freezer;
+static void enqueue_task_freezer(struct rq *rq, struct task_struct *p, int flags) {
+	struct freezer_rq *freezer = &rq->freezer;
 	freezer->count++;
-	list_add_tail(p->freezer.entity, &freezer->entities);
+	list_add_tail(&p->freezer.entity, &freezer->entities);
 }
 
 static void put_prev_task_freezer(struct rq *rq, struct task_struct *prev)
 {
-	// access freezer member variable of rq
-	// idle_exit_fair(rq);
-	// rq_last_tick_reset(rq);
+	// unsure what this function is supposed to do
 }
 
 static void task_tick_freezer(struct rq *rq, struct task_struct *curr, int queued)
@@ -84,7 +89,7 @@ static void update_curr_freezer(struct rq *rq)
 }
 
 
-struct sched_class freezer_sched_class = {
+const struct sched_class freezer_sched_class = {
 
 	.next			= &fair_sched_class,
 	
